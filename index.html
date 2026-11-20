@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VHS-плеер — эмулятор кассеты</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="vcr">
+    <div class="screen-bezel">
+      <div class="screen-wrapper" id="screenWrapper" data-aspect="16:9">
+        <canvas id="glCanvas"></canvas>
+        <video id="sourceVideo" playsinline crossorigin="anonymous"></video>
+        <div id="overlay" class="overlay">
+          <div id="actionToast" class="action-toast hidden"></div>
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-content">
+              <div class="cassette-icon">📼</div>
+              <p>Перетащите видео сюда<br>или нажмите, чтобы выбрать файл</p>
+              <input type="file" id="fileInput" accept="video/*" hidden />
+              <button id="pickBtn" class="vcr-btn">ВЫБРАТЬ ВИДЕО</button>
+            </div>
+            <div class="vcr-idle-osd">НЕТ КАССЕТЫ</div>
+          </div>
+          <div id="startupSeq" class="startup-seq hidden">
+            <div class="startup-blue" id="startupBlue">
+              <div class="startup-osd top">PLAY ►</div>
+              <div class="startup-osd bottom">SP</div>
+            </div>
+            <canvas id="snowCanvas" class="startup-snow hidden"></canvas>
+          </div>
+          <div id="osd" class="osd hidden">
+            <span id="osdTime">00:00</span>
+            <span id="osdStatus">ВОСПРОИЗВЕДЕНИЕ ►</span>
+          </div>
+          <div id="bigStatus" class="big-status hidden">
+            <div class="big-status-box">
+              <div class="big-status-main">
+                <span id="bigStatusIcon">■</span>
+                <span id="bigStatusText">Стоп</span>
+              </div>
+              <div id="pauseInfo" class="pause-info hidden"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deck">
+      <div class="transport">
+        <button id="btnRew" class="deck-btn" title="Назад на 10 сек">◀◀</button>
+        <button id="btnPlay" class="deck-btn primary" title="Пуск / Пауза">▶</button>
+        <button id="btnStop" class="deck-btn" title="Стоп">■</button>
+        <button id="btnFf" class="deck-btn" title="Вперёд на 10 сек">▶▶</button>
+        <span class="transport-sep" aria-hidden="true"></span>
+        <button id="btnAspect" class="deck-btn deck-btn-wide" title="Пропорции экрана">16:9</button>
+        <span class="transport-sep" aria-hidden="true"></span>
+        <button id="btnLoad" class="deck-btn" title="Выбрать видео">📂</button>
+        <span class="transport-sep" aria-hidden="true"></span>
+        <button id="btnVhs" class="deck-btn deck-btn-wide vhs-on" title="VHS-эффекты (авто)">VHS</button>
+        <span class="transport-sep" aria-hidden="true"></span>
+        <button id="btnFs" class="deck-btn" title="Полный экран">⛶</button>
+      </div>
+
+      <div class="sliders" id="effectSliders">
+        <label>
+          Дёргание
+          <input type="range" id="tracking" min="0" max="100" value="15" />
+        </label>
+        <label>
+          Помехи
+          <input type="range" id="noise" min="0" max="100" value="5" />
+        </label>
+        <label>
+          Цветосдвиг
+          <input type="range" id="chroma" min="0" max="100" value="30" />
+        </label>
+        <label>
+          Износ ленты
+          <input type="range" id="wear" min="0" max="100" value="50" />
+        </label>
+        <label>
+          <span class="slider-title">Частота (<span id="fpsValue">24</span>)</span>
+          <input type="range" id="fps" min="24" max="60" value="24" step="1" />
+        </label>
+      </div>
+
+      <div class="status-bar">
+        <span id="fileName">НЕТ КАССЕТЫ</span>
+        <span id="timeDisplay">--:-- / --:--</span>
+      </div>
+      <div class="seek-row">
+        <input type="range" id="seekSlider" min="0" max="1000" value="0" step="1" />
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
